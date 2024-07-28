@@ -17,28 +17,145 @@ const FuelResults = ({ results }) => {
     const nozzlesHtml = results.MadkidXF.map((_, index) => `
       <p>نازل ${index + 1}:</p>
       <p>شروع دوره: ${results.MadkidXF[index]}</p>
-      <p>پایان دوره: ${results.MadkidYG[index]}</p>
+      <p>پایان دوره: ${results.MadkidYF[index]}</p>
     `).join('');
 
     const htmlContent = `
       <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Arial', sans-serif;
+              padding: 20px;
+              background-color: #fff;
+            }
+            .header {
+              background-color: #ff3333;
+              padding: 10px;
+              margin-bottom: 10px;
+            }
+            .header-text {
+              color: #fff;
+              font-size: 16px;
+              font-weight: bold;
+              margin-bottom: 5px;
+            }
+            .table {
+              border: 1px solid #000;
+              padding: 10px;
+            }
+            .section-header {
+              font-size: 18px;
+              font-weight: bold;
+              margin-bottom: 10px;
+              color: #ff3333;
+              text-align: center;
+            }
+            .button {
+              background-color: #ff3333;
+              padding: 5px;
+              border-radius: 5px;
+              text-align: center;
+            }
+            .button-text {
+              color: #000000;
+              font-size: 16px;
+            }
+            .row {
+              display: flex;
+              flex-direction: row;
+              writing-direction: rtl;
+            }
+            .cell {
+              flex: 1;
+              border: 1px solid #000;
+              text-align: center;
+              padding: 5px;
+            }
+            .cell-text {
+              font-size: 14px;
+              text-align: right;
+              writing-direction: rtl;
+            }
+            .totals {
+              margin-top: 10px;
+            }
+            .time-container {
+              margin-top: 20px;
+              padding: 10px;
+              border: 1px solid #000;
+              border-radius: 5px;
+              background-color: #F0F0F0;
+            }
+            .time-text {
+              font-size: 16px;
+              text-align: right;
+            }
+            .background-red {
+              background-color: #fff333;
+            }
+            .padding-tb {
+              padding-bottom: 10px;
+            }
+            .padding-tt {
+              padding-top: 10px;
+            }
+            .row-reverse {
+              flex-direction: row-reverse;
+            }
+          </style>
+        </head>
         <body>
-          <h1>گزارش جایگاه بنزین</h1>
-          <p>نام جایگاه: ${results.names}</p>
-          <p>نام کنترل کننده: ${results.namesboos}</p>
-          <p>ابتدای دوره بنزین: ${results.allfuels}</p>
-          <p>دوره رسید: ${results.receivedFuelJV}</p>
-          <p>کل فروش الکترونیکی بنزینطبق سامانه: ${results.electrofuelJV}</p>
-          <p>جمع مخازن بنزین: ${results.finalFuelQuantity}</p>
-          <p>مقدار فروش مکانیکی هر نازل بنزین: ${results.mechanicalSalesPerNozzleFuel.join(', ')}</p>
-          <p>کل فروش مکانیکی دوره نازل‌های بنزین: ${results.totalMechanicalSalesFuel}</p>
-          <p>کل موجودی بنزین: ${results.totalFuel}</p>
-          <p>کل فراورده بنزینخارج شده دوره از جایگاه: ${results.totalProductFuelOut}</p>
-          <p>بعد از فروش باید موجود باشد - بنزین: ${results.afterSalesFuel}</p>
-          <p>تفاوت موجودی و فروش بنزین: ${results.shortageOrSurplusFuel > 0 ? `-${results.shortageOrSurplusFuel}` : results.shortageOrSurplusFuel}</p>
-          <p>کسری مجاز بنزین: ${results.allowableShortageFuel}</p>
-          <p>کسری غیرمجاز بنزین: ${results.illegalShortageFuel}</p>
-          ${nozzlesHtml}
+          <div class="header">
+            <p class="header-text">نام جایگاه: ${results.names}</p>
+            <p class="header-text">کنترل کننده: ${results.namesboos}</p>
+            <p class="header-text">دوره کنترل: از ${results.startDateJS} تا ${results.endDateJS}</p>
+            <p class="header-text">تاریخ بازدید: ${results.formattedDateJV}</p>
+            <p class="header-text">ساعت: ${results.formattedTimeJV}</p>
+          </div>
+          <div class="table">
+            <p class="section-header">گزارش عملیات بنزین</p>
+            <p class="cell-text">ابتدای دوره: ${results.allfuels}</p>
+            <p class="cell-text">رسید: ${results.receivedFuelJV}</p>
+            ${results.tanksFuelF && results.tanksFuelF.length > 0 ? results.tanksFuelF.map((_, index) => `
+              <div class="row row-reverse">
+                <p class="cell-text">مخزن ${index + 1}: ${results.tanksFuelF[index]}</p>
+              </div>
+            `).join('') : ''}
+            <p class="cell-text padding-tb">جمع مخازن: ${results.finalFuelQuantity}</p>
+            <div class="row">
+              <div class="cell"><p class="cell-text">فروش</p></div>
+              <div class="cell"><p class="cell-text">انتها دوره</p></div>
+              <div class="cell"><p class="cell-text">ابتدا دوره</p></div>
+              <div class="cell"><p class="cell-text">نازل</p></div>
+            </div>
+            ${results.MadkidXF && results.MadkidXF.length > 0 ? results.MadkidXF.map((_, index) => `
+              <div class="row">
+                <p class="cell">${results.MadkidZF[index]}</p>
+                <div class="cell"><p class="cell-text">${results.MadkidYF[index]}</p></div>
+                <div class="cell"><p class="cell-text">${results.MadkidXF[index]}</p></div>
+                <div class="cell"><p class="cell-text">${index + 1}</p></div>
+              </div>
+            `).join('') : ''}
+            <div class="totals">
+              <div class="row">
+                <div class="cell"><p class="cell-text">کل فروش مکانیکی بنزین: ${results.totalMechanicalSalesFuel}</p></div>
+              </div>
+              <div class="row">
+                <div class="cell"><p class="cell-text">کل فروش الکترونیکی بنزینطبق گزارش سامانه: ${results.electrofuelJV}</p></div>
+              </div>
+              <div class="row">
+                <div class="cell"><p class="cell-text">مقدار سرک / کسری بنزین: ${results.shortageOrSurplusFuel} ${results.vaziatFuel}</p></div>
+              </div>
+              <div class="row">
+                <div class="cell"><p class="cell-text">کسری غیر مجاز بنزین: ${results.illegalShortageFuel}</p></div>
+              </div>
+              <div class="row">
+                <div class="cell"><p class="cell-text">مقدار مغایرت مکانیکی و الکترونیکی بنزین: ${results.HF}</p></div>
+              </div>
+            </div>
+          </div>
+          <p class="cell-text padding-tt">امضا: تاریخ گزارش:</p>
         </body>
       </html>
     `;
@@ -64,35 +181,29 @@ const FuelResults = ({ results }) => {
 
       <View style={styles.table}>
         <Text style={[styles.sectionHeader, styles.highlightedText]}>گزارش عملیات بنزین</Text>
-        
-          <Text style={styles.cellText}>ابتدای دوره : {results.allfuels}</Text>
-       <Text style={styles.cellText}>رسید : {results.receivedFuelJV}</Text>
-       
-       {results.tanksFuelF && results.tanksFuelF.length > 0 && results.tanksFuelF.map((_, index) => (
+        <Text style={styles.cellText}>ابتدای دوره : {results.allfuels}</Text>
+        <Text style={styles.cellText}>رسید : {results.receivedFuelJV}</Text>
+        {results.tanksFuelF && results.tanksFuelF.length > 0 && results.tanksFuelF.map((_, index) => (
           <View key={`tanksFuelF-${index}`} style={[styles.row, styles.rowReverse]}>
             <Text style={styles.cellText}>مخزن {index + 1}:</Text>
             <Text style={styles.cellText}>{results.tanksFuelF[index]}</Text>
           </View>
         ))}
-        <Text style={[styles.cellText, styles.paddintb ]}>جمع مخازن : {results.finalFuelQuantity}</Text>
-
-          <View style={styles.row}>
+        <Text style={[styles.cellText, styles.paddingtb]}>جمع مخازن : {results.finalFuelQuantity}</Text>
+        <View style={styles.row}>
           <View style={styles.cell}><Text style={styles.cellText}>فروش</Text></View>
           <View style={styles.cell}><Text style={styles.cellText}>انتها دوره </Text></View>
-    <View style={styles.cell}><Text style={styles.cellText}>ابتدا دوره </Text></View>
-    <View style={styles.cell}><Text style={styles.cellText}>نازل </Text></View>
+          <View style={styles.cell}><Text style={styles.cellText}>ابتدا دوره </Text></View>
+          <View style={styles.cell}><Text style={styles.cellText}>نازل </Text></View>
         </View>
-{results.MadkidXF && results.MadkidXF.length > 0 && results.MadkidXF.map((_, index) => (
-  <View key={`MadkidXF-${index}`} style={styles.row}>
-    <Text style={styles.cell}>{results.MadkidZF[index]}</Text>
-
-    <View style={styles.cell}><Text style={styles.cellText}> {results.MadkidYF[index]}</Text></View>
-    <View style={styles.cell}><Text style={styles.cellText}>{results.MadkidXF[index]}</Text></View>
-    <View style={styles.cell}><Text style={styles.cellText}>{index + 1}</Text></View>
-  </View>
-))}
-
-
+        {results.MadkidXF && results.MadkidXF.length > 0 && results.MadkidXF.map((_, index) => (
+          <View key={`MadkidXF-${index}`} style={styles.row}>
+            <Text style={styles.cell}>{results.MadkidZF[index]}</Text>
+            <View style={styles.cell}><Text style={styles.cellText}> {results.MadkidYF[index]}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>{results.MadkidXF[index]}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>{index + 1}</Text></View>
+          </View>
+        ))}
         <View style={styles.totals}>
           <View style={styles.row}>
             <View style={styles.cell}><Text style={styles.cellText}>کل فروش مکانیکی بنزین: {results.totalMechanicalSalesFuel}</Text></View>
@@ -111,9 +222,7 @@ const FuelResults = ({ results }) => {
           </View>
         </View>
       </View>
-     <Text style={[styles.cellText, styles.paddintt]}>                امضا:                                   تاریخ گزارش:                                </Text>
-
-      
+      <Text style={[styles.cellText, styles.paddingtt]}>                امضا:                                   تاریخ گزارش:                                </Text>
       <View style={styles.buttonContainer}>
         <Button title="ساخت PDF" onPress={generatePDF} color="#ff3333" />
       </View>
@@ -153,7 +262,7 @@ const styles = StyleSheet.create({
     color: '#ff3333',
     textAlign: 'center',
   },
-row: {
+  row: {
     flexDirection: 'row',
     writingDirection: 'rtl', // Ensure the row's text direction is right-to-left
   },
@@ -203,13 +312,11 @@ row: {
   backgroundred: {
     backgroundColor: '#fff333',
   },
-  paddintb:{
+  paddingtb:{
     paddingBottom: 10, 
-
   },
-  paddintt:{
+  paddingtt:{
     paddingTop: 10, 
-
   },
 });
 

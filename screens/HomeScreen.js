@@ -14,13 +14,14 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-      <Image source={require('../assets/icon.png')} style={styles.image} />
-      <Text style={styles.title}>بازرسی جایگاه‌های سوخت</Text>
+      <Image source={require('../assets/adaptive-icon.png')} style={styles.image} tintColor="#ffffff" />
+      <Text style={styles.title}>سامانه بازرسی سرک-کسری جایگاه های سوخت GS PMC</Text>
+
       <View style={styles.buttonContainer}>
         <Button
           title="شروع بازرسی"
           onPress={() => navigation.navigate('Calculations')}
-          color="#ffffff" // Change the button text color to white for better contrast
+          color="blue" // Change the button text color to white for better contrast
         />
       </View>
     </Animated.View>
@@ -32,17 +33,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1e1e1e', // Change the background to a different color
+    backgroundColor: '#0005B4', // Change the background to a different color
     padding: 20,
   },
   image: {
-    width: 100, // Set your desired width
+    width: 130, // Set your desired width
     height: 100, // Set your desired height
-    marginBottom: 20,
-    borderRadius: 50, // Make the image circular
+    tintColor: '#ffffff', // Apply the white tint color
   },
   title: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#ffffff',

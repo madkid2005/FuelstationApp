@@ -91,42 +91,7 @@ const InputForm = ({ onCalculate }) => {
   };
 
   const steps = [
-    [
-      {
-        label: 'Select Fuel Type',
-        component: (
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { backgroundColor: fuelType === 'Gasoline' ? theme.buttonActive : theme.buttonBackground }
-              ]}
-              onPress={() => setFuelType('Gasoline')}
-            >
-              <Text style={styles.buttonText}>Gasoline</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { backgroundColor: fuelType === 'Gas' ? theme.buttonActive : theme.buttonBackground }
-              ]}
-              onPress={() => setFuelType('Gas')}
-            >
-              <Text style={styles.buttonText}>Gas</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { backgroundColor: fuelType === 'Both' ? theme.buttonActive : theme.buttonBackground }
-              ]}
-              onPress={() => setFuelType('Both')}
-            >
-              <Text style={styles.buttonText}>Both</Text>
-            </TouchableOpacity>
-          </View>
-        ),
-      },
-    ],
+   
     [
       {
         label: 'نام جایگاه',
@@ -139,6 +104,103 @@ const InputForm = ({ onCalculate }) => {
         value: boosname,
         onChangeText: setBoosName,
         keyboardType: 'default',
+      },
+    ],
+    [
+      {
+        label: 'لطفا یکی از موارد زیر انتخاب کنید',
+        component: (
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { backgroundColor: fuelType === 'Gasoline' ? theme.buttonActive : theme.buttonBackground }
+              ]}
+              onPress={() => setFuelType('Gasoline')}
+            >
+              <Text style={styles.buttonText}>بنزین</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { backgroundColor: fuelType === 'Gas' ? theme.buttonActive : theme.buttonBackground }
+              ]}
+              onPress={() => setFuelType('Gas')}
+            >
+              <Text style={styles.buttonText}>گاز</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { backgroundColor: fuelType === 'Both' ? theme.buttonActive : theme.buttonBackground }
+              ]}
+              onPress={() => setFuelType('Both')}
+            >
+              <Text style={styles.buttonText}>هردو </Text>
+            </TouchableOpacity>
+          </View>
+        ),
+      },
+    ],
+    [
+      {
+        label: 'تاریخ شروع',
+        value: startDate,
+        component: (
+          <JalaliCalendar selectedDate={startDate} onDateChange={setStartDate} />
+        ),
+      },
+      {
+        label: 'تاریخ پایان',
+        value: endDate,
+        component: (
+          <JalaliCalendar selectedDate={endDate} onDateChange={setEndDate} />
+        ),
+      },
+    ],
+    [
+      {
+        label: 'تعداد مخازن بنزین',
+        value: numTanksFuel,
+        onChangeText: text => {
+          setNumTanksFuel(text);
+          initializeTanks(text, setTanksFuel);
+        },
+        keyboardType: 'numeric',
+        condition: fuelType !== 'Gas', // Show if not Gas
+      },
+      {
+        label: 'تعداد مخازن گاز',
+        value: numTanksGas,
+        onChangeText: text => {
+          setNumTanksGas(text);
+          initializeTanks(text, setTanksGas);
+        },
+        keyboardType: 'numeric',
+        condition: fuelType !== 'Gasoline', // Show if not Gasoline
+      },
+    ],
+    
+    [
+      {
+        label: 'تعداد نازل‌های بنزین',
+        value: numNozzlesFuel,
+        onChangeText: text => {
+          setNumNozzlesFuel(text);
+          initializeNozzles(text, setNozzlesFuel);
+        },
+        keyboardType: 'numeric',
+        condition: fuelType !== 'Gas', // Show if not Gas
+      },
+      {
+        label: 'تعداد نازل‌های گاز',
+        value: numNozzlesGas,
+        onChangeText: text => {
+          setNumNozzlesGas(text);
+          initializeNozzles(text, setNozzlesGas);
+        },
+        keyboardType: 'numeric',
+        condition: fuelType !== 'Gasoline', // Show if not Gasoline
       },
     ],
     [
@@ -174,6 +236,101 @@ const InputForm = ({ onCalculate }) => {
       },
     ],
     [
+      ...tanksFuel.map((tank, index) => ({
+        label: `مخزن بنزین ${index + 1}`,
+        component: (
+          <View key={index}>
+            <TextInput
+              style={styles.input}
+              value={tank.endQuantity}
+              placeholder="End Quantity"
+              onChangeText={value => updateTankFuel(index, value)}
+              keyboardType="numeric"
+            />
+          </View>
+        ),
+        condition: fuelType !== 'Gas', // Show if not Gas
+      })),
+      ...tanksGas.map((tank, index) => ({
+        label: `مخزن گاز ${index + 1}`,
+        component: (
+          <View key={index}>
+            <TextInput
+              style={styles.input}
+              value={tank.endQuantity}
+              placeholder="End Quantity"
+              onChangeText={value => updateTankGas(index, value)}
+              keyboardType="numeric"
+            />
+          </View>
+        ),
+        condition: fuelType !== 'Gasoline', // Show if not Gasoline
+      })),
+    ],
+    
+    [
+      ...nozzlesFuel.map((nozzle, index) => ({
+        label: `نازل بنزین ${index + 1}`,
+        component: (
+          <View key={index}>
+            <TextInput
+              style={styles.input}
+              value={nozzle.startPeriod}
+              placeholder="توتالایزر ابتدای "
+
+              onChangeText={value => updateNozzleFuel(index, 'startPeriod', value)}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              value={nozzle.endPeriod}
+              placeholder="توتالایزر انتهای "
+              
+              onChangeText={value => updateNozzleFuel(index, 'endPeriod', value)}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              value={nozzle.result}
+              placeholder="نتیجه"
+              editable={false}
+            />
+          </View>
+        ),
+        condition: fuelType !== 'Gas', // Show if not Gas
+      })),
+      ...nozzlesGas.map((nozzle, index) => ({
+        label: `نازل گاز ${index + 1}`,
+        component: (
+          <View key={index}>
+            <TextInput
+              style={styles.input}
+              value={nozzle.startPeriod}
+              placeholder="توتالایزر ابتدای "
+              onChangeText={value => updateNozzleGas(index, 'startPeriod', value)}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              value={nozzle.endPeriod}
+              placeholder="توتالایزر انتهای "
+              onChangeText={value => updateNozzleGas(index, 'endPeriod', value)}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              value={nozzle.result}
+              placeholder="نتیجه"
+
+              editable={false}
+            />
+          </View>
+        ),
+        condition: fuelType !== 'Gasoline', // Show if not Gasoline
+      })),
+    ],
+   
+    [
       {
         label: 'کل فروش الکترونیکی بنزین طبق سامانه',
         value: electrofuel,
@@ -190,160 +347,8 @@ const InputForm = ({ onCalculate }) => {
       },
     ],
     
-    [
-      {
-        label: 'تاریخ شروع',
-        value: startDate,
-        component: (
-          <JalaliCalendar selectedDate={startDate} onDateChange={setStartDate} />
-        ),
-      },
-      {
-        label: 'تاریخ پایان',
-        value: endDate,
-        component: (
-          <JalaliCalendar selectedDate={endDate} onDateChange={setEndDate} />
-        ),
-      },
-    ],
-    [
-      {
-        label: 'تعداد نازل‌های بنزین',
-        value: numNozzlesFuel,
-        onChangeText: text => {
-          setNumNozzlesFuel(text);
-          initializeNozzles(text, setNozzlesFuel);
-        },
-        keyboardType: 'numeric',
-        condition: fuelType !== 'Gas', // Show if not Gas
-      },
-      {
-        label: 'تعداد نازل‌های گاز',
-        value: numNozzlesGas,
-        onChangeText: text => {
-          setNumNozzlesGas(text);
-          initializeNozzles(text, setNozzlesGas);
-        },
-        keyboardType: 'numeric',
-        condition: fuelType !== 'Gasoline', // Show if not Gasoline
-      },
-    ],
-    [
-      {
-        label: 'تعداد مخازن بنزین',
-        value: numTanksFuel,
-        onChangeText: text => {
-          setNumTanksFuel(text);
-          initializeTanks(text, setTanksFuel);
-        },
-        keyboardType: 'numeric',
-        condition: fuelType !== 'Gas', // Show if not Gas
-      },
-      {
-        label: 'تعداد مخازن گاز',
-        value: numTanksGas,
-        onChangeText: text => {
-          setNumTanksGas(text);
-          initializeTanks(text, setTanksGas);
-        },
-        keyboardType: 'numeric',
-        condition: fuelType !== 'Gasoline', // Show if not Gasoline
-      },
-    ],
-    [
-      ...nozzlesFuel.map((nozzle, index) => ({
-        label: `نازل بنزین ${index + 1}`,
-        component: (
-          <View key={index}>
-            <Text>نازل بنزین {index + 1}</Text>
-            <TextInput
-              style={styles.input}
-              value={nozzle.startPeriod}
-              placeholder="Start Period"
-              onChangeText={value => updateNozzleFuel(index, 'startPeriod', value)}
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              value={nozzle.endPeriod}
-              placeholder="End Period"
-              onChangeText={value => updateNozzleFuel(index, 'endPeriod', value)}
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              value={nozzle.result}
-              placeholder="Result"
-              editable={false}
-            />
-          </View>
-        ),
-        condition: fuelType !== 'Gas', // Show if not Gas
-      })),
-      ...nozzlesGas.map((nozzle, index) => ({
-        label: `نازل گاز ${index + 1}`,
-        component: (
-          <View key={index}>
-            <Text>نازل گاز {index + 1}</Text>
-            <TextInput
-              style={styles.input}
-              value={nozzle.startPeriod}
-              placeholder="Start Period"
-              onChangeText={value => updateNozzleGas(index, 'startPeriod', value)}
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              value={nozzle.endPeriod}
-              placeholder="End Period"
-              onChangeText={value => updateNozzleGas(index, 'endPeriod', value)}
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              value={nozzle.result}
-              placeholder="Result"
-              editable={false}
-            />
-          </View>
-        ),
-        condition: fuelType !== 'Gasoline', // Show if not Gasoline
-      })),
-    ],
-    [
-      ...tanksFuel.map((tank, index) => ({
-        label: `مخزن بنزین ${index + 1}`,
-        component: (
-          <View key={index}>
-            <Text>مخزن بنزین {index + 1}</Text>
-            <TextInput
-              style={styles.input}
-              value={tank.endQuantity}
-              placeholder="End Quantity"
-              onChangeText={value => updateTankFuel(index, value)}
-              keyboardType="numeric"
-            />
-          </View>
-        ),
-        condition: fuelType !== 'Gas', // Show if not Gas
-      })),
-      ...tanksGas.map((tank, index) => ({
-        label: `مخزن گاز ${index + 1}`,
-        component: (
-          <View key={index}>
-            <Text>مخزن گاز {index + 1}</Text>
-            <TextInput
-              style={styles.input}
-              value={tank.endQuantity}
-              placeholder="End Quantity"
-              onChangeText={value => updateTankGas(index, value)}
-              keyboardType="numeric"
-            />
-          </View>
-        ),
-        condition: fuelType !== 'Gasoline', // Show if not Gasoline
-      })),
-    ],
+   
+    
   ];
 
   const currentStepFields = steps[step];
