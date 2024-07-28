@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 import * as Print from 'expo-print';
 import moment from 'moment-jalaali';
 
-const FuelResults = ({ results }) => {
+const GasResults = ({ results }) => {
   const [currentTime, setCurrentTime] = useState('');
 
   const handleButtonClick = () => {
@@ -14,30 +14,30 @@ const FuelResults = ({ results }) => {
   };
 
   const generatePDF = async () => {
-    const nozzlesHtml = results.MadkidXF.map((_, index) => `
+    const nozzlesHtml = results.MadkidXG.map((_, index) => `
       <p>نازل ${index + 1}:</p>
-      <p>شروع دوره: ${results.MadkidXF[index]}</p>
+      <p>شروع دوره: ${results.MadkidXG[index]}</p>
       <p>پایان دوره: ${results.MadkidYG[index]}</p>
     `).join('');
 
     const htmlContent = `
       <html>
         <body>
-          <h1>گزارش جایگاه بنزین</h1>
+          <h1>گزارش جایگاه گاز</h1>
           <p>نام جایگاه: ${results.names}</p>
           <p>نام کنترل کننده: ${results.namesboos}</p>
-          <p>ابتدای دوره بنزین: ${results.allfuels}</p>
-          <p>دوره رسید: ${results.receivedFuelJV}</p>
-          <p>کل فروش الکترونیکی بنزینطبق سامانه: ${results.electrofuelJV}</p>
-          <p>جمع مخازن بنزین: ${results.finalFuelQuantity}</p>
-          <p>مقدار فروش مکانیکی هر نازل بنزین: ${results.mechanicalSalesPerNozzleFuel.join(', ')}</p>
-          <p>کل فروش مکانیکی دوره نازل‌های بنزین: ${results.totalMechanicalSalesFuel}</p>
-          <p>کل موجودی بنزین: ${results.totalFuel}</p>
-          <p>کل فراورده بنزینخارج شده دوره از جایگاه: ${results.totalProductFuelOut}</p>
-          <p>بعد از فروش باید موجود باشد - بنزین: ${results.afterSalesFuel}</p>
-          <p>تفاوت موجودی و فروش بنزین: ${results.shortageOrSurplusFuel > 0 ? `-${results.shortageOrSurplusFuel}` : results.shortageOrSurplusFuel}</p>
-          <p>کسری مجاز بنزین: ${results.allowableShortageFuel}</p>
-          <p>کسری غیرمجاز بنزین: ${results.illegalShortageFuel}</p>
+          <p>ابتدای دوره گاز: ${results.allgazs}</p>
+          <p>دوره رسید: ${results.receivedGazJV}</p>
+          <p>کل فروش الکترونیکی گاز طبق سامانه: ${results.electrogazJV}</p>
+          <p>جمع مخازن گاز: ${results.finalGasQuantity}</p>
+          <p>مقدار فروش مکانیکی هر نازل گاز: ${results.mechanicalSalesPerNozzleGas.join(', ')}</p>
+          <p>کل فروش مکانیکی دوره نازل‌های گاز: ${results.totalMechanicalSalesGas}</p>
+          <p>کل موجودی گاز: ${results.totalGas}</p>
+          <p>کل فراورده گاز خارج شده دوره از جایگاه: ${results.totalProductGasOut}</p>
+          <p>بعد از فروش باید موجود باشد - گاز: ${results.afterSalesGas}</p>
+          <p>تفاوت موجودی و فروش گاز: ${results.shortageOrSurplusGas > 0 ? `-${results.shortageOrSurplusGas}` : results.shortageOrSurplusGas}</p>
+          <p>کسری مجاز گاز: ${results.allowableShortageGas}</p>
+          <p>کسری غیرمجاز گاز: ${results.illegalShortageGas}</p>
           ${nozzlesHtml}
         </body>
       </html>
@@ -63,18 +63,18 @@ const FuelResults = ({ results }) => {
       </View>
 
       <View style={styles.table}>
-        <Text style={styles.sectionHeader}>گزارش عملیات بنزین</Text>
+        <Text style={styles.sectionHeader}>گزارش عملیات گاز</Text>
         
-          <Text style={styles.cellText}>ابتدای دوره : {results.allfuels}</Text>
-       <Text style={styles.cellText}>رسید : {results.receivedFuelJV}</Text>
+          <Text style={styles.cellText}>ابتدای دوره : {results.allgazs}</Text>
+       <Text style={styles.cellText}>رسید : {results.receivedGazJV}</Text>
        
-       {results.tanksFuelF && results.tanksFuelF.length > 0 && results.tanksFuelF.map((_, index) => (
-          <View key={`tanksFuelF-${index}`} style={[styles.row, styles.rowReverse]}>
+       {results.tanksGasG && results.tanksGasG.length > 0 && results.tanksGasG.map((_, index) => (
+          <View key={`tanksGasG-${index}`} style={[styles.row, styles.rowReverse]}>
             <Text style={styles.cellText}>مخزن {index + 1}:</Text>
-            <Text style={styles.cellText}>{results.tanksFuelF[index]}</Text>
+            <Text style={styles.cellText}>{results.tanksGasG[index]}</Text>
           </View>
         ))}
-        <Text style={styles.cellText}>جمع مخازن : {results.finalFuelQuantity}</Text>
+        <Text style={styles.cellText}>جمع مخازن : {results.finalGasQuantity}</Text>
 
           <View style={styles.row}>
           <View style={styles.cell}><Text style={styles.cellText}>فروش</Text></View>
@@ -82,12 +82,12 @@ const FuelResults = ({ results }) => {
     <View style={styles.cell}><Text style={styles.cellText}>ابتدا دوره </Text></View>
     <View style={styles.cell}><Text style={styles.cellText}>نازل </Text></View>
         </View>
-{results.MadkidXF && results.MadkidXF.length > 0 && results.MadkidXF.map((_, index) => (
-  <View key={`MadkidXF-${index}`} style={styles.row}>
-    <Text style={styles.cell}>{results.MadkidZF[index]}</Text>
+{results.MadkidXG && results.MadkidXG.length > 0 && results.MadkidXG.map((_, index) => (
+  <View key={`MadkidXG-${index}`} style={styles.row}>
+    <Text style={styles.cell}>{results.mechanicalSalesPerNozzleGas}</Text>
 
-    <View style={styles.cell}><Text style={styles.cellText}> {results.MadkidYF[index]}</Text></View>
-    <View style={styles.cell}><Text style={styles.cellText}>{results.MadkidXF[index]}</Text></View>
+    <View style={styles.cell}><Text style={styles.cellText}> {results.MadkidYG[index]}</Text></View>
+    <View style={styles.cell}><Text style={styles.cellText}>{results.MadkidXG[index]}</Text></View>
     <View style={styles.cell}><Text style={styles.cellText}>{index + 1}</Text></View>
   </View>
 ))}
@@ -95,19 +95,19 @@ const FuelResults = ({ results }) => {
 
         <View style={styles.totals}>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>کل فروش مکانیکی بنزین: {results.totalMechanicalSalesFuel}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>کل فروش مکانیکی گاز: {results.totalMechanicalSalesGas}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>کل فروش الکترونیکی بنزینطبق گزارش سامانه: {results.electrofuelJV}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>کل فروش الکترونیکی گاز طبق گزارش سامانه: {results.electrogazJV}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>مقدار سرک / کسری بنزین: {results.shortageOrSurplusFuel} {results.vaziatFuel}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>مقدار سرک / کسری گاز: {results.shortageOrSurplusGas}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>کسری غیر مجاز بنزین: {results.illegalShortageFuel}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>کسری غیر مجاز گاز: {results.illegalShortageGas}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>مقدار مغایرت مکانیکی و الکترونیکی بنزین: {results.HF}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>مقدار مغایرت مکانیکی و الکترونیکی گاز: {results.mechanicalElectronicDifference}</Text></View>
           </View>
         </View>
       </View>
@@ -194,9 +194,6 @@ row: {
     fontSize: 16,
     textAlign: 'right',
   },
-  backgroundred: {
-    backgroundColor: '#fff333',
-  },
 });
 
-export default FuelResults;
+export default GasResults;

@@ -44,12 +44,16 @@ export const performCalculations = (data) => {
 
   const MadkidYG = nozzlesGas.map(nozzle => nozzle.endPeriod );
   const MadkidXG = nozzlesGas.map(nozzle =>  nozzle.startPeriod);
+  const MadkidZG = nozzlesGas.map(nozzle =>  nozzle.result);
+
 
   
   const MadkidYF = nozzlesFuel.map(nozzle => nozzle.endPeriod );
   const MadkidXF = nozzlesFuel.map(nozzle =>  nozzle.startPeriod);
-
+  const MadkidZF = nozzlesFuel.map(nozzle =>  nozzle.result);
   const tanksGasG = tanksGas.map(tank => tank.endQuantity );
+  const tanksFuelF = tanksFuel.map(tank => tank.endQuantity );
+
 
 
   const totalMechanicalSalesFuel = mechanicalSalesPerNozzleFuel.reduce((total, sale) => total + sale, 0);
@@ -106,8 +110,11 @@ export const performCalculations = (data) => {
     allfuels,
     MadkidYG,
     MadkidXG,
+    MadkidZG,
+    MadkidZF,
     MadkidYF,
     tanksGasG,
+    tanksFuelF,
     MadkidXF,
     startDateJS,
     allgazs,

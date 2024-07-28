@@ -63,7 +63,7 @@ const GasResults = ({ results }) => {
       </View>
 
       <View style={styles.table}>
-        <Text style={styles.sectionHeader}>گزارش عملیات بنزین</Text>
+        <Text style={styles.sectionHeader}>گزارش عملیات گاز</Text>
         
           <Text style={styles.cellText}>ابتدای دوره : {results.allgazs}</Text>
        <Text style={styles.cellText}>رسید : {results.receivedGazJV}</Text>
@@ -84,10 +84,10 @@ const GasResults = ({ results }) => {
         </View>
 {results.MadkidXG && results.MadkidXG.length > 0 && results.MadkidXG.map((_, index) => (
   <View key={`MadkidXG-${index}`} style={styles.row}>
-    <View style={styles.cell}><Text style={styles.cellText}>فروش</Text></View>
-
-    <View style={styles.cell}><Text style={styles.cellText}>{results.MadkidXG[index]}</Text></View>
+    <Text style={styles.cell} >{results.MadkidZG[index]}</Text>
+    
     <View style={styles.cell}><Text style={styles.cellText}> {results.MadkidYG[index]}</Text></View>
+    <View style={styles.cell}><Text style={styles.cellText}>{results.MadkidXG[index]}</Text></View>
     <View style={styles.cell}><Text style={styles.cellText}>{index + 1}</Text></View>
   </View>
 ))}
@@ -95,19 +95,18 @@ const GasResults = ({ results }) => {
 
         <View style={styles.totals}>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>کل فروش مکانیکی بنزین: {results.totalMechanicalSalesGas}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>کل فروش مکانیکی گاز: {results.totalMechanicalSalesGas}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>کل فروش الکترونیکی بنزین طبق گزارش سامانه: {results.electrogazJV}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>کل فروش الکترونیکی گاز طبق گزارش سامانه: {results.electrogazJV}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>مقدار سرک / کسری بنزین: {results.shortageOrSurplusGas}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>مقدار سرک / کسری گاز: {results.shortageOrSurplusGas} {results.vaziatGaz}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>کسری غیر مجاز بنزین: {results.illegalShortageGas}</Text></View>
           </View>
           <View style={styles.row}>
-            <View style={styles.cell}><Text style={styles.cellText}>مقدار مغایرت مکانیکی و الکترونیکی بنزین: {results.mechanicalElectronicDifference}</Text></View>
+            <View style={styles.cell}><Text style={styles.cellText}>مقدار مغایرت مکانیکی و الکترونیکی گاز: {results.HG}</Text></View>
           </View>
         </View>
       </View>
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#ff3333',
+    color: '#fff353',
     textAlign: 'right',
   },
 row: {
@@ -187,6 +186,7 @@ row: {
     borderRadius: 5,
     backgroundColor: '#F0F0F0',
   },
+ 
   rowReverse: {
     flexDirection: 'row-reverse',
   },
