@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button,TouchableOpacity } from 'react-native';
 import * as Print from 'expo-print';
 import moment from 'moment-jalaali';
 
@@ -65,6 +65,7 @@ const GasResults = ({ results }) => {
       <View style={styles.table}>
         <Text style={styles.sectionHeader}>گزارش عملیات گاز</Text>
         
+        
           <Text style={styles.cellText}>ابتدای دوره : {results.allgazs}</Text>
        <Text style={styles.cellText}>رسید : {results.receivedGazJV}</Text>
        
@@ -74,7 +75,7 @@ const GasResults = ({ results }) => {
             <Text style={styles.cellText}>{results.tanksGasG[index]}</Text>
           </View>
         ))}
-        <Text style={styles.cellText}>جمع مخازن : {results.finalGasQuantity}</Text>
+        <Text style={[styles.cellText, styles.paddintb]}>جمع مخازن : {results.finalGasQuantity}</Text>
 
           <View style={styles.row}>
           <View style={styles.cell}><Text style={styles.cellText}>فروش</Text></View>
@@ -110,9 +111,13 @@ const GasResults = ({ results }) => {
           </View>
         </View>
       </View>
+      <Text style={[styles.cellText, styles.paddintt]}>                امضا:                                   تاریخ گزارش:                                </Text>
 
-      
-      <Button title="ساخت PDF" onPress={generatePDF} />
+      <View style={styles.container}>
+      <TouchableOpacity style={styles.button} onPress={generatePDF}>
+        <Text style={styles.buttonText}>ساخت PDF</Text>
+      </TouchableOpacity>
+    </View>
     </ScrollView>
   );
 };
@@ -123,13 +128,18 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  buttonContainer:{
+    padding: 20,
+    color: '#000',
+
+  },
   header: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#ffc107',
     padding: 10,
     marginBottom: 10,
   },
   headerText: {
-    color: '#fff',
+    color: '#000',
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
@@ -139,12 +149,26 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     padding: 10,
   },
+  paddintt:{
+    paddingTop: 10, 
+
+  },
   sectionHeader: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#fff353',
-    textAlign: 'right',
+    color: '#ffc107',
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: '#ffc107',
+    padding: 5,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#000000',
+    fontSize: 16,
+    textAlign: 'center',
   },
 row: {
     flexDirection: 'row',
@@ -157,6 +181,10 @@ row: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
+  },
+  paddintb:{
+    paddingBottom: 10, 
+
   },
   cellText: {
     fontSize: 14,

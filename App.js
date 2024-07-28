@@ -26,7 +26,7 @@ const App = () => {
           <Stack.Screen
             name="ResultsTabs"
             component={ResultsTabs}
-            options={{ title: 'نتایج' }}
+            options={{ title: 'گزارش ها' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

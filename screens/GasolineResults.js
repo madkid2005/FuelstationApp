@@ -63,7 +63,7 @@ const FuelResults = ({ results }) => {
       </View>
 
       <View style={styles.table}>
-        <Text style={styles.sectionHeader}>گزارش عملیات بنزین</Text>
+        <Text style={[styles.sectionHeader, styles.highlightedText]}>گزارش عملیات بنزین</Text>
         
           <Text style={styles.cellText}>ابتدای دوره : {results.allfuels}</Text>
        <Text style={styles.cellText}>رسید : {results.receivedFuelJV}</Text>
@@ -74,7 +74,7 @@ const FuelResults = ({ results }) => {
             <Text style={styles.cellText}>{results.tanksFuelF[index]}</Text>
           </View>
         ))}
-        <Text style={styles.cellText}>جمع مخازن : {results.finalFuelQuantity}</Text>
+        <Text style={[styles.cellText, styles.paddintb ]}>جمع مخازن : {results.finalFuelQuantity}</Text>
 
           <View style={styles.row}>
           <View style={styles.cell}><Text style={styles.cellText}>فروش</Text></View>
@@ -111,9 +111,12 @@ const FuelResults = ({ results }) => {
           </View>
         </View>
       </View>
+     <Text style={[styles.cellText, styles.paddintt]}>                امضا:                                   تاریخ گزارش:                                </Text>
 
       
-      <Button title="ساخت PDF" onPress={generatePDF} />
+      <View style={styles.buttonContainer}>
+        <Button title="ساخت PDF" onPress={generatePDF} color="#ff3333" />
+      </View>
     </ScrollView>
   );
 };
@@ -124,8 +127,11 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  buttonContainer:{
+    padding: 20,
+  },
   header: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#ff3333',
     padding: 10,
     marginBottom: 10,
   },
@@ -145,7 +151,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     color: '#ff3333',
-    textAlign: 'right',
+    textAlign: 'center',
   },
 row: {
     flexDirection: 'row',
@@ -196,6 +202,14 @@ row: {
   },
   backgroundred: {
     backgroundColor: '#fff333',
+  },
+  paddintb:{
+    paddingBottom: 10, 
+
+  },
+  paddintt:{
+    paddingTop: 10, 
+
   },
 });
 
