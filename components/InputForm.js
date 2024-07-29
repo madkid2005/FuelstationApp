@@ -437,6 +437,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    
   },
   scrollContainer: {
     flexGrow: 1,
@@ -467,6 +468,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 5,
     alignItems: 'center',
+
+
   },
   buttonText: {
     color: '#fff',
