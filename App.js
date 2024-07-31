@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', // تنظیم موقعیت افقی تصویر به مرکز
   },
   headerImage: {
-    width: 777,
+    width: 666,
     height: 44, // تنظیم ارتفاع تصویر به 100%
   },
 });
